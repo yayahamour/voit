@@ -14,7 +14,6 @@ def main():
     with container_voiture :
         button_Voiture = st.sidebar.button("Voiture")
         if(button_Voiture):
-            st.dataframe(voiture_base)
             st.write([voiture for voiture in voiture_base.find({}, {"_id" : 0})])
 
 
