@@ -11,7 +11,6 @@ def main():
     voiture_base = db["sim"]
     st.title("Recherche :")
     container_voiture = st.container()
-    print(st.secrets[""])
     with container_voiture :
         button_Voiture = st.sidebar.button("Voiture")
         if(button_Voiture):
