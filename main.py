@@ -5,9 +5,9 @@ import pymongo
 
 
 def main():
-    cluster = pymongo.MongoClient("mongodb+srv://"+ st.secrets["DB_USER_NAME"] +":"+st.secrets["DB_PASSWORD "]+"@cluster0.lt7mc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
-    db = cluster["Simplon"]
-    voiture_base = db["sim"]
+    # cluster = pymongo.MongoClient("mongodb+srv://"+ st.secrets["DB_USER_NAME"] +":"+st.secrets["DB_PASSWORD "]+"@cluster0.lt7mc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
+    # db = cluster["Simplon"]
+    # voiture_base = db["sim"]
     st.title("Recherche :")
     container_voiture = st.container()
     with container_voiture :
