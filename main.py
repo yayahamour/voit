@@ -13,7 +13,7 @@ def main():
     with container_voiture :
         button_Voiture = st.sidebar.button("Voiture")
         if(button_Voiture):
-            st.write(voiture_base.find({}, {"_id" : 0}))
+            pass
 
 
 
