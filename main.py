@@ -6,7 +6,7 @@ def main():
     cluster = pymongo.MongoClient("mongodb+srv://yanissimplon:yanissimplon@cluster0.lt7mc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
     db = cluster["Simplon"]
     voiture_base = db["sim"]
-    st.title("Recherche :")
+    st.title("Voiture info :")
     container_voiture = st.container()
     constructeur = voiture_base.distinct("Make")
     select_constructor = st.sidebar.selectbox("Constructeur", constructeur)
@@ -25,6 +25,7 @@ def main():
             str(voiture["city mpg"]) +"L au 100km en ville")
         formulaire = st.container()
         with formulaire:
+            st.title("Ajout dans BDD")
             make = st.text_input("Make")
             model = st.text_input("Model")
             year = st.text_input("Year")
