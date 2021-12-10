@@ -32,13 +32,16 @@ def main():
             chev = st.text_input("Engine Cylinders")
             demande = st.button("Nouveau Formulaire")
             if (demande):
-                if (make != "" and model != ""):
+                if (make != "" and model != "" and year != "" and chev != ""):
                     try:
                         y = int(year)
                         c = int(chev)
                         voiture_base.insert_one({"Make" : make, "Model" : model, "Year" : y, "Engine Cylinders": c})
+                        st.write("Ajout effectué")
                     except:
-                        print("Error Type")
+                        st.write("Les catégories Year et Engine Cylinders ne prennent que des nombres")
+                else :
+                    st.write("Veuillez entrer toute les informations demandé")
 main()
 
 #   list_type_movie = list_type(movie)
