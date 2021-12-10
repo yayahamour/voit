@@ -2,6 +2,15 @@ import streamlit as st
 import pymongo
 
 
+def get_list_constructor(voiture_base):
+    liste = []
+    for i in voiture_base["modele"]:
+        try :
+            liste.index(i)
+        except:
+            liste.append(i)
+    return liste
+
 
 
 def main():
@@ -11,11 +20,12 @@ def main():
     voiture_base = db["sim"]
     st.title("Recherche :")
     container_voiture = st.container()
+    constructeur = get_list_constructor(voiture_base)
+    st.sidebar.selectbox("constructeur", constructeur)
     with container_voiture :
         button_Voiture = st.sidebar.button("Voiture")
         if(button_Voiture):
             st.write([voiture for voiture in voiture_base.find({}, {"_id" : 0})])
-
 
 main()
 
