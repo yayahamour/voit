@@ -36,7 +36,8 @@ def main():
         if(button_Voiture):
             st.write([voiture for voiture in voiture_base.find({}, {"_id" : 0})])
     with constructor:
-        model = st.sidebar.selectbox("Model", get_list_model(constructor))
+        pass
+        #model = st.sidebar.selectbox("Model", get_list_model(constructor))
 
 main()
 
