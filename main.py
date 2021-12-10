@@ -11,6 +11,15 @@ def get_list_constructor(voiture_base):
             liste.append(constructor["Make"])
     return (liste)
 
+def get_list_model(voiture_base, constructor):
+    liste = []
+    for voiture in voiture_base.find({"Make" : constructor}, {"_id" : 0, "Model": 1}):
+        try:
+            liste.index(constructor["Model"])
+        except:
+            liste.append(constructor["Model"])
+    return (liste)
+
 #for voiture in voiture_base.find({"Make" : "BMW"}, {"_id" : 0, "Model": 1}):
 def main():
     cluster = pymongo.MongoClient("mongodb+srv://"+st.secrets["DB_USER_NAME"] +":"+st.secrets["DB_PASSWORD"]+"@cluster0.lt7mc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
@@ -20,11 +29,14 @@ def main():
     st.title("Recherche :")
     container_voiture = st.container()
     constructeur = get_list_constructor(voiture_base)
-    st.sidebar.selectbox("constructeur", constructeur)
+    constructor = st.sidebar.selectbox("Constructeur", constructeur)
+    model = st.sidebar.selectbox("Model")
     with container_voiture :
         button_Voiture = st.sidebar.button("Voiture")
         if(button_Voiture):
             st.write([voiture for voiture in voiture_base.find({}, {"_id" : 0})])
+    with constructor:
+        model = st.sidebar.selectbox("Model", get_list_model(constructor))
 
 main()
 
