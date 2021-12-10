@@ -4,15 +4,14 @@ import pymongo
 
 def get_list_constructor(voiture_base):
     liste = []
-    for i in voiture_base["modele"]:
-        try :
-            liste.index(i)
+    for constructor in voiture_base.find({}, {"_id" : 0, "Make": 1}):
+        try:
+            liste.index(constructor["Make"])
         except:
-            liste.append(i)
-    return liste
+            liste.append(constructor["Make"])
+    return (liste)
 
-
-
+#for voiture in voiture_base.find({"Make" : "BMW"}, {"_id" : 0, "Model": 1}):
 def main():
     cluster = pymongo.MongoClient("mongodb+srv://"+st.secrets["DB_USER_NAME"] +":"+st.secrets["DB_PASSWORD"]+"@cluster0.lt7mc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
     #cluster = pymongo.MongoClient("mongodb+srv://yanissimplon:yanissimplon@cluster0.lt7mc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
