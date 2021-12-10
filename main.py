@@ -30,7 +30,7 @@ def main():
     container_voiture = st.container()
     constructeur = get_list_constructor(voiture_base)
     constructor = st.sidebar.selectbox("Constructeur", constructeur)
-    model = st.sidebar.selectbox("Model")
+    model = st.sidebar.selectbox("Model", {})
     with container_voiture :
         button_Voiture = st.sidebar.button("Voiture")
         if(button_Voiture):
