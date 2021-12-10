@@ -1,44 +1,43 @@
 import streamlit as st
 import pymongo
 
-
-def get_list_constructor(voiture_base):
-    liste = []
-    for constructor in voiture_base.find({}, {"_id" : 0, "Make": 1}):
-        try:
-            liste.index(constructor["Make"])
-        except:
-            liste.append(constructor["Make"])
-    return (liste)
-
-def get_list_model(voiture_base, constructor):
-    liste = []
-    for voiture in voiture_base.find({"Make" : constructor}, {"_id" : 0, "Model": 1}):
-        try:
-            liste.index(constructor["Model"])
-        except:
-            liste.append(constructor["Model"])
-    return (liste)
-
-#for voiture in voiture_base.find({"Make" : "BMW"}, {"_id" : 0, "Model": 1}):
 def main():
-    cluster = pymongo.MongoClient("mongodb+srv://"+st.secrets["DB_USER_NAME"] +":"+st.secrets["DB_PASSWORD"]+"@cluster0.lt7mc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
-    #cluster = pymongo.MongoClient("mongodb+srv://yanissimplon:yanissimplon@cluster0.lt7mc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
+    #cluster = pymongo.MongoClient("mongodb+srv://"+st.secrets["DB_USER_NAME"] +":"+st.secrets["DB_PASSWORD"]+"@cluster0.lt7mc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
+    cluster = pymongo.MongoClient("mongodb+srv://yanissimplon:yanissimplon@cluster0.lt7mc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
     db = cluster["Simplon"]
     voiture_base = db["sim"]
     st.title("Recherche :")
     container_voiture = st.container()
-    constructeur = get_list_constructor(voiture_base)
-    constructor = st.sidebar.selectbox("Constructeur", constructeur)
-    model = st.sidebar.selectbox("Model", {})
+    constructeur = voiture_base.distinct("Make")
+    select_constructor = st.sidebar.selectbox("Constructeur", constructeur)
+    
     with container_voiture :
-        button_Voiture = st.sidebar.button("Voiture")
-        if(button_Voiture):
-            st.write([voiture for voiture in voiture_base.find({}, {"_id" : 0})])
-    with constructor:
-        pass
-        #model = st.sidebar.selectbox("Model", get_list_model(constructor))
+        if select_constructor:
+            select_model = st.sidebar.selectbox("Model", voiture_base.distinct("Model",{"Make": select_constructor}))
 
+        if select_model :
+            voiture = voiture_base.find({"Model" : select_model, "Make" : select_constructor}, {})[0]
+           
+            st.write("La " + voiture["Make"] + " " + voiture["Model"] + " de "+ str(voiture["Year"]),
+            " a " + str(voiture["Engine HP"]),
+            "chevaux et " + str(voiture["Engine Cylinders"]) + " cylindres. Sa consommation ",
+            "sur autoroute est de "+ str(voiture["highway MPG"]) + "L au 100km et de ",
+            str(voiture["city mpg"]) +"L au 100km en ville")
+        formulaire = st.container()
+        with formulaire:
+            make = st.text_input("Make")
+            model = st.text_input("Model")
+            year = st.text_input("Year")
+            chev = st.text_input("Engine Cylinders")
+            demande = st.button("Nouveau Formulaire")
+            if (demande):
+                if (make != "" and model != ""):
+                    try:
+                        y = int(year)
+                        c = int(chev)
+                        voiture_base.insert_one({"Make" : make, "Model" : model, "Year" : y, "Engine Cylinders": c})
+                    except:
+                        print("Error Type")
 main()
 
 #   list_type_movie = list_type(movie)
